@@ -1,0 +1,1002 @@
+<html><head><base href="https://websim.ai/@floralzephyr43970920/jeu-2048">
+<title>Jeu 2048 - Variante Pac-Man, Cerise et Fraise</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.game-container {
+  background-color: #bbada0;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.grid-container {
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  background-color: #cdc1b4;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(238, 228, 218, 0.35);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #776e65;
+}
+
+.cherry, .strawberry, .orange, .apple, .melon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.cherry {
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cherry::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 6px;
+  height: 30px;
+  background: #8b4513;
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+
+.strawberry {
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.strawberry::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  background: #228b22;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.orange {
+  background: radial-gradient(circle at 30% 30%, #ffa500, #cc8400);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.apple {
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.apple::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 6px;
+  height: 30px;
+  background: #8b4513;
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+
+.melon {
+  background: radial-gradient(circle at 30% 30%, #ffcc99, #ff9966);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.melon::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  background: #228b22;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.cell-2 { background-color: #eee4da; }
+.cell-4 { background-color: #ede0c8; }
+.cell-8 { background-color: #f2b179; color: #f9f6f2; }
+.cell-16 { background-color: #f59563; color: #f9f6f2; }
+.cell-32 { background-color: #f67c5f; color: #f9f6f2; }
+.cell-64 { background-color: #f65e3b; color: #f9f6f2; }
+.cell-128 { background-color: #edcf72; color: #f9f6f2; }
+.cell-256 { background-color: #edcc61; color: #f9f6f2; }
+.cell-512 { background-color: #edc850; color: #f9f6f2; }
+.cell-1024 { background-color: #edc53f; color: #f9f6f2; }
+.cell-2048 { background-color: #edc22e; color: #f9f6f2; }
+
+.pacman {
+  width: 80px;
+  height: 80px;
+  background-color: #ffca33; 
+  border-radius: 50%;
+  position: relative;
+}
+
+.pacman::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(238, 228, 218, 0.35);
+  border-radius: 50%;
+  clip-path: polygon(100% 74%, 44% 48%, 100% 21%);
+  animation: eat 0.7s linear infinite;
+}
+
+@keyframes eat {
+  0% { clip-path: polygon(100% 74%, 44% 48%, 100% 21%); }
+  25% { clip-path: polygon(100% 60%, 44% 48%, 100% 40%); }
+  50% { clip-path: polygon(100% 50%, 44% 48%, 100% 50%); }
+  75% { clip-path: polygon(100% 59%, 44% 48%, 100% 35%); }
+  100% { clip-path: polygon(100% 74%, 44% 48%, 100% 21%); }
+}
+
+.super-pacman {
+  width: 80px;
+  height: 80px;
+  background-color: #0000FF;
+  border-radius: 50%;
+  position: relative;
+  animation: blink 0.5s linear infinite alternate;
+}
+
+.super-pacman::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #0000FF;
+  border-radius: 50%;
+  clip-path: polygon(100% 74%, 44% 48%, 100% 21%);
+  animation: eat 0.7s linear infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.score {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #776e65;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.score {
+  font-size: 18px;
+  font-weight: bold;
+  color: #776e65;
+  margin-bottom: 5px;
+}
+
+.version {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 14px;
+  color: #776e65;
+  background-color: rgba(238, 228, 218, 0.35);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.game-over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(238, 228, 218, 0.73);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #776e65;
+  z-index: 100;
+}
+
+.game-over > div {
+  margin-bottom: 10px;
+}
+
+.game-over > div:first-child {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.retry-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #8f7a66;
+  color: #f9f6f2;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ghost {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  border-radius: 50% 50% 0 0;
+}
+
+.ghost::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: 0 0 50% 50%;
+}
+
+.ghost::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 25px;
+  left: 20px;
+  box-shadow: 30px 0 0 white;
+}
+
+.blinky { background-color: #FF0000; }
+.pinky { background-color: #FFC0CB; }
+.inky { background-color: #00FFFF; }
+.clyde { background-color: #FFA500; }
+
+.key, .bell, .galaxian {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.key {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border-radius: 6px 6px 0 0;
+}
+
+.key::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 12px;
+  height: 36px;
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+
+.key::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 24px;
+  height: 6px;
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border-radius: 3px;
+  transform: translateX(-50%);
+}
+
+.bell {
+  background: radial-gradient(circle at 30% 30%, #1e90ff, #0000cd);
+  border-radius: 50% 50% 0 0;
+}
+
+.bell::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: #1e90ff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.bell::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #0000cd;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.galaxian {
+  background: radial-gradient(circle at 30% 30%, #ff6347, #cd5c5c);
+  border-radius: 50%;
+}
+
+.galaxian::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 36px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #ff6347, #cd5c5c);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.galaxian::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 24px;
+  height: 12px;
+  background: radial-gradient(circle at 30% 30%, #ff6347, #cd5c5c);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 600px) {
+  .game-container {
+    padding: 10px;
+  }
+
+  .grid {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .cell {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .pacman, .super-pacman, .cherry, .strawberry, .orange, .apple, .melon, .galaxian, .bell, .key, .pill, .ghost {
+    width: 60px;
+    height: 60px;
+  }
+
+  .key, .bell, .galaxian {
+    width: 40px;
+    height: 40px;
+  }
+
+  .key::before {
+    top: 8px;
+    width: 8px;
+    height: 24px;
+  }
+
+  .key::after {
+    top: 4px;
+    width: 16px;
+    height: 4px;
+  }
+
+  .bell::before {
+    top: -8px;
+    width: 8px;
+    height: 8px;
+  }
+
+  .bell::after {
+    bottom: -4px;
+    width: 4px;
+    height: 4px;
+  }
+
+  .galaxian::before {
+    top: 4px;
+    width: 24px;
+    height: 12px;
+  }
+
+  .galaxian::after {
+    bottom: 4px;
+    width: 16px;
+    height: 8px;
+  }
+
+  .score {
+    font-size: 20px;
+  }
+
+  .version {
+    font-size: 12px;
+  }
+
+  .game-over {
+    font-size: 20px;
+  }
+
+  .game-over > div:first-child {
+    font-size: 36px;
+  }
+
+  .retry-button {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  .cell {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .pacman, .super-pacman, .cherry, .strawberry, .orange, .apple, .melon, .galaxian, .bell, .key, .pill, .ghost {
+    width: 40px;
+    height: 40px;
+  }
+
+  .version {
+    font-size: 10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  body {
+    flex-direction: row;
+  }
+
+  .game-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .game-info {
+    flex-direction: column;
+    margin-right: 20px;
+  }
+
+  .grid-container {
+    width: 70vh;
+    height: 70vh;
+  }
+
+  .grid {
+    width: 100%;
+    height: 100%;
+  }
+
+  .cell {
+    width: calc(14vh - 4px);
+    height: calc(14vh - 4px);
+  }
+
+  .pacman, .super-pacman, .cherry, .strawberry, .orange, .apple, .melon, .galaxian, .bell, .key, .pill, .ghost {
+    width: calc(14vh - 4px);
+    height: calc(14vh - 4px);
+  }
+}
+</style>
+</head>
+<body>
+<div class="game-container">
+  <div class="game-info">
+    <div class="score">Score: <span id="score">0</span></div>
+  </div>
+  <div class="grid-container">
+    <div class="grid" id="grid"></div>
+    <div class="version">v1.2</div>
+  </div>
+</div>
+<script>
+const grid = document.getElementById('grid');
+const scoreElement = document.getElementById('score');
+let score = 0;
+let board = [];
+let cherryAdded = false;
+let strawberryAdded = false;
+let orangeAdded = false;
+let appleAdded = false;
+let melonAdded = false;
+let galaxianAdded = false;
+let bellAdded = false;
+let keyAdded = false;
+let pillAdded = false;
+let superPacmanActive = false;
+let ghostAdded = false;
+let currentGhostType = '';
+const ghostTypes = ['blinky', 'pinky', 'inky', 'clyde'];
+let ghostTypeIndex = 0;
+let fruitsEaten = 0;
+let ghostsEaten = 0;
+
+function initializeGame() {
+  board = Array(5).fill().map(() => Array(5).fill(0));
+  score = 0;
+  cherryAdded = false;
+  strawberryAdded = false;
+  orangeAdded = false;
+  appleAdded = false;
+  melonAdded = false;
+  galaxianAdded = false;
+  bellAdded = false;
+  keyAdded = false;
+  pillAdded = false;
+  superPacmanActive = false;
+  ghostAdded = false;
+  currentGhostType = '';
+  ghostTypeIndex = 0;
+  fruitsEaten = 0;
+  ghostsEaten = 0;
+  addNewTile();
+  addNewTile();
+  addPacman();
+  updateBoard();
+}
+
+function isPacmanOnBoard() {
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (board[i][j] === 'pacman' || board[i][j] === 'super-pacman') {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function addNewTile() {
+  const emptyTiles = [];
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (board[i][j] === 0) {
+        emptyTiles.push({i, j});
+      }
+    }
+  }
+  if (emptyTiles.length > 0) {
+    const {i, j} = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+    board[i][j] = Math.random() < 0.9 ? 2 : 4;
+  }
+}
+
+function addPacman() {
+  const emptyTiles = [];
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (board[i][j] === 0) {
+        emptyTiles.push({i, j});
+      }
+    }
+  }
+  if (emptyTiles.length > 0) {
+    const {i, j} = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+    board[i][j] = 'pacman';
+  }
+}
+
+function addFruit(fruitType) {
+  if ((fruitType === 'cherry' && !cherryAdded) || 
+      (fruitType === 'strawberry' && !strawberryAdded) || 
+      (fruitType === 'orange' && !orangeAdded) ||
+      (fruitType === 'apple' && !appleAdded) ||
+      (fruitType === 'melon' && !melonAdded) ||
+      (fruitType === 'galaxian' && !galaxianAdded) ||
+      (fruitType === 'bell' && !bellAdded) ||
+      (fruitType === 'key' && !keyAdded) ||
+      (fruitType === 'pill' && !pillAdded) ||
+      (fruitType === 'ghost' && !ghostAdded)) {
+    const emptyTiles = [];
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        if (board[i][j] === 0) {
+          emptyTiles.push({i, j});
+        }
+      }
+    }
+    if (emptyTiles.length > 0) {
+      const {i, j} = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+      if (fruitType === 'ghost') {
+        currentGhostType = ghostTypes[ghostTypeIndex];
+        board[i][j] = currentGhostType;
+        ghostTypeIndex = (ghostTypeIndex + 1) % ghostTypes.length;
+      } else {
+        board[i][j] = fruitType;
+      }
+      if (fruitType === 'cherry') {
+        cherryAdded = true;
+      } else if (fruitType === 'strawberry') {
+        strawberryAdded = true;
+      } else if (fruitType === 'orange') {
+        orangeAdded = true;
+      } else if (fruitType === 'apple') {
+        appleAdded = true;
+      } else if (fruitType === 'melon') {
+        melonAdded = true;
+      } else if (fruitType === 'galaxian') {
+        galaxianAdded = true;
+      } else if (fruitType === 'bell') {
+        bellAdded = true;
+      } else if (fruitType === 'key') {
+        keyAdded = true;
+      } else if (fruitType === 'pill') {
+        pillAdded = true;
+      } else if (fruitType === 'ghost') {
+        ghostAdded = true;
+      }
+    }
+  }
+}
+
+function updateBoard() {
+  grid.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      const cell = document.createElement('div');
+      cell.className = `cell cell-${board[i][j]}`;
+      if (board[i][j] === 'pacman' || board[i][j] === 'super-pacman') {
+        const pacman = document.createElement('div');
+        pacman.className = board[i][j] === 'pacman' ? 'pacman' : 'super-pacman';
+        pacman.style.backgroundColor = board[i][j] === 'pacman' ? '#ffca33' : '#0000FF';
+        pacman.style.setProperty('--mouth-color', board[i][j] === 'pacman' ? 'rgba(238, 228, 218, 0.35)' : '#0000FF');
+        cell.appendChild(pacman);
+      } else if (board[i][j] === 'cherry') {
+        const cherry = document.createElement('div');
+        cherry.className = 'cherry';
+        const stem = document.createElement('div');
+        stem.className = 'cherry-stem';
+        cherry.appendChild(stem);
+        cell.appendChild(cherry);
+      } else if (board[i][j] === 'strawberry') {
+        const strawberry = document.createElement('div');
+        strawberry.className = 'strawberry';
+        cell.appendChild(strawberry);
+      } else if (board[i][j] === 'orange') {
+        const orange = document.createElement('div');
+        orange.className = 'orange';
+        cell.appendChild(orange);
+      } else if (board[i][j] === 'apple') {
+        const apple = document.createElement('div');
+        apple.className = 'apple';
+        cell.appendChild(apple);
+      } else if (board[i][j] === 'melon') {
+        const melon = document.createElement('div');
+        melon.className = 'melon';
+        cell.appendChild(melon);
+      } else if (board[i][j] === 'galaxian') {
+        const galaxian = document.createElement('div');
+        galaxian.className = 'galaxian';
+        cell.appendChild(galaxian);
+      } else if (board[i][j] === 'bell') {
+        const bell = document.createElement('div');
+        bell.className = 'bell';
+        cell.appendChild(bell);
+      } else if (board[i][j] === 'key') {
+        const key = document.createElement('div');
+        key.className = 'key';
+        cell.appendChild(key);
+      } else if (board[i][j] === 'pill') {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        cell.appendChild(pill);
+      } else if (ghostTypes.includes(board[i][j])) {
+        const ghost = document.createElement('div');
+        ghost.className = `ghost ${board[i][j]}`;
+        cell.appendChild(ghost);
+      } else {
+        cell.textContent = board[i][j] || '';
+      }
+      grid.appendChild(cell);
+    }
+  }
+  scoreElement.textContent = score;
+}
+
+function getHighestTileValue() {
+  let highest = 0;
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (typeof board[i][j] === 'number' && board[i][j] > highest) {
+        highest = board[i][j];
+      }
+    }
+  }
+  return highest;
+}
+
+function move(direction) {
+  let moved = false;
+  const newBoard = JSON.parse(JSON.stringify(board));
+
+  function pushNumbers(arr) {
+    const newArr = arr.filter(x => x !== 0);
+    for (let i = 0; i < newArr.length - 1; i++) {
+      if (newArr[i] === newArr[i + 1] && typeof newArr[i] === 'number') {
+        newArr[i] *= 2;
+        score += newArr[i];
+        newArr.splice(i + 1, 1);
+        moved = true;
+      } else if (newArr[i] === 'pacman' && (newArr[i + 1] === 'cherry' || newArr[i + 1] === 'strawberry' || newArr[i + 1] === 'orange' || newArr[i + 1] === 'apple' || newArr[i + 1] === 'melon' || newArr[i + 1] === 'galaxian' || newArr[i + 1] === 'bell' || newArr[i + 1] === 'key')) {
+        newArr.splice(i + 1, 1);
+        moved = true;
+        score += 50;
+        fruitsEaten++;
+        if (newArr[i + 1] === 'cherry') {
+          cherryAdded = false;
+        } else if (newArr[i + 1] === 'strawberry') {
+          strawberryAdded = false;
+        } else if (newArr[i + 1] === 'orange') {
+          orangeAdded = false;
+        } else if (newArr[i + 1] === 'apple') {
+          appleAdded = false;
+        } else if (newArr[i + 1] === 'melon') {
+          melonAdded = false;
+        } else if (newArr[i + 1] === 'galaxian') {
+          galaxianAdded = false;
+        } else if (newArr[i + 1] === 'bell') {
+          bellAdded = false;
+        } else if (newArr[i + 1] === 'key') {
+          keyAdded = false;
+        }
+      } else if ((newArr[i] === 'cherry' || newArr[i] === 'strawberry' || newArr[i] === 'orange' || newArr[i] === 'apple' || newArr[i] === 'melon' || newArr[i] === 'galaxian' || newArr[i] === 'bell' || newArr[i] === 'key') && newArr[i + 1] === 'pacman') {
+        newArr[i] = 'pacman';
+        newArr.splice(i + 1, 1);
+        moved = true;
+        score += 50;
+        fruitsEaten++;
+        if (newArr[i] === 'cherry') {
+          cherryAdded = false;
+        } else if (newArr[i] === 'strawberry') {
+          strawberryAdded = false;
+        } else if (newArr[i] === 'orange') {
+          orangeAdded = false;
+        } else if (newArr[i] === 'apple') {
+          appleAdded = false;
+        } else if (newArr[i] === 'melon') {
+          melonAdded = false;
+        } else if (newArr[i] === 'galaxian') {
+          galaxianAdded = false;
+        } else if (newArr[i] === 'bell') {
+          bellAdded = false;
+        } else if (newArr[i] === 'key') {
+          keyAdded = false;
+        }
+      } else if (newArr[i] === 'pacman' && newArr[i + 1] === 'pill') {
+        newArr[i] = 'super-pacman';
+        newArr.splice(i + 1, 1);
+        moved = true;
+        superPacmanActive = true;
+        setTimeout(() => {
+          superPacmanActive = false;
+          for (let x = 0; x < 5; x++) {
+            for (let y = 0; y < 5; y++) {
+              if (board[x][y] === 'super-pacman') {
+                board[x][y] = 'pacman';
+              }
+            }
+          }
+          updateBoard();
+        }, 30000); // Super-pacman state lasts for 30 seconds
+      } else if (newArr[i] === 'pill' && newArr[i + 1] === 'pacman') {
+        newArr[i] = 'super-pacman';
+        newArr.splice(i + 1, 1);
+        moved = true;
+        superPacmanActive = true;
+        setTimeout(() => {
+          superPacmanActive = false;
+          for (let x = 0; x < 5; x++) {
+            for (let y = 0; y < 5; y++) {
+              if (board[x][y] === 'super-pacman') {
+                board[x][y] = 'pacman';
+              }
+            }
+          }
+          updateBoard();
+        }, 30000); // Super-pacman state lasts for 30 seconds
+      } else if ((newArr[i] === 'pacman' || newArr[i] === 'super-pacman') && ghostTypes.includes(newArr[i + 1])) {
+        newArr.splice(i + 1, 1);
+        moved = true;
+        score += 100;
+        ghostsEaten++; // Increment the ghostsEaten counter
+        ghostAdded = false;
+      } else if (ghostTypes.includes(newArr[i]) && (newArr[i + 1] === 'pacman' || newArr[i + 1] === 'super-pacman')) {
+        newArr[i] = newArr[i + 1];
+        newArr.splice(i + 1, 1);
+        moved = true;
+        score += 100;
+        ghostsEaten++; // Increment the ghostsEaten counter
+        ghostAdded = false;
+      }
+    }
+    while (newArr.length < 5) {
+      newArr.push(0);
+    }
+    return newArr;
+  }
+
+  if (direction === 'ArrowLeft' || direction === 'ArrowRight') {
+    for (let i = 0; i < 5; i++) {
+      let row = newBoard[i];
+      row = direction === 'ArrowLeft' ? pushNumbers(row) : pushNumbers(row.reverse()).reverse();
+      if (JSON.stringify(row) !== JSON.stringify(newBoard[i])) {
+        moved = true;
+      }
+      newBoard[i] = row;
+    }
+  } else {
+    for (let j = 0; j < 5; j++) {
+      let column = [newBoard[0][j], newBoard[1][j], newBoard[2][j], newBoard[3][j], newBoard[4][j]];
+      column = direction === 'ArrowUp' ? pushNumbers(column) : pushNumbers(column.reverse()).reverse();
+      if (JSON.stringify(column) !== JSON.stringify([newBoard[0][j], newBoard[1][j], newBoard[2][j], newBoard[3][j], newBoard[4][j]])) {
+        moved = true;
+      }
+      for (let i = 0; i < 5; i++) {
+        newBoard[i][j] = column[i];
+      }
+    }
+  }
+
+  if (moved) {
+    board = newBoard;
+    addNewTile();
+    if (fruitsEaten === 8 && !ghostAdded && ghostsEaten < 4) {
+      addFruit('ghost');
+    }
+    if (score >= 100 && !cherryAdded) {
+      addFruit('cherry');
+    }
+    if (score >= 175 && !strawberryAdded) {
+      addFruit('strawberry');
+    }
+    if (score >= 250 && !orangeAdded) {
+      addFruit('orange');
+    }
+    if (score >= 700 && !appleAdded) {
+      addFruit('apple');
+    }
+    if (score >= 800 && !melonAdded) {
+      addFruit('melon');
+    }
+    if (score >= 900 && !galaxianAdded) {
+      addFruit('galaxian');
+    }
+    if (score >= 1000 && !bellAdded) {
+      addFruit('bell');
+    }
+    if (score >= 1100 && !keyAdded) {
+      addFruit('key');
+    }
+
+    // Check if all ghosts have been eaten
+    if (ghostsEaten === 4) {
+      // Remove Pac-Man from the board
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+          if (board[i][j] === 'pacman' || board[i][j] === 'super-pacman') {
+            board[i][j] = 0;
+          }
+        }
+      }
+    }
+
+    updateBoard();
+    if (isGameOver()) {
+      endGame();
+    }
+  }
+}
+
+function isGameOver() {
+  let filledTiles = 0;
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (board[i][j] !== 0) {
+        filledTiles++;
+      }
+    }
+  }
+  return filledTiles === 25 || !isPacmanOnBoard();
+}
+
+function endGame() {
+  const highestTile = getHighestTileValue();
+  const gameOverDiv = document.createElement('div');
+  gameOverDiv.className = 'game-over';
+  gameOverDiv.innerHTML = `
+    <div>Game Over!</div>
+    <div>Score: ${score}</div>
+    <div>Fruits mangés: ${fruitsEaten}</div>
+    <div>Fantômes mangés: ${ghostsEaten}</div>
+    <div>Tuile la plus élevée: ${highestTile}</div>
+    <button class="retry-button" onclick="restartGame()">Réessayer</button>
+  `;
+  document.body.appendChild(gameOverDiv);
+}
+
+function restartGame() {
+  const gameOverDiv = document.querySelector('.game-over');
+  if (gameOverDiv) {
+    gameOverDiv.remove();
+  }
+  initializeGame();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
+    move(e.key);
+  }
+});
+
+let touchStartX, touchStartY;
+
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+});
+
+function handleTouch(e) {
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    move(dx > 0 ? 'ArrowRight' : 'ArrowLeft');
+  } else {
+    move(dy > 0 ? 'ArrowDown' : 'ArrowUp');
+  }
+}
+
+document.addEventListener('touchend', handleTouch);
+
+initializeGame();
+</script>
+</body>
+</html>
